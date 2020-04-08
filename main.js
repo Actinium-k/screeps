@@ -1,5 +1,5 @@
 //require('prototype.spawn')
-//require('prototype.creep')
+//require('prototype.creep')();
 let roleHarvester = require('role.harvester');
 let roleUpgrader = require('role.upgrader');
 let roleBuilder = require('role.builder');
@@ -13,9 +13,8 @@ module.exports.loop = function () {
     const harvesters_max = 3;
     const upgraders_max = 5;
     const builders_max = 4;
-    const repairers_max = 1;
+    const repairers_max = 2;
     const wallrepairers_max = 0;
-    const claimers_max = 0;
 
     // Create arrays containing all roles
     let roles = [roleHarvester, roleUpgrader, roleBuilder, roleRepairer, roleWallRepairer, roleClaimer];
@@ -28,7 +27,6 @@ module.exports.loop = function () {
     let repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
     let wallrepairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'wallrepairer');
 
-    //console.log('Current CPU usage:', (Math.round(Game.cpu.getUsed() * 100) / 1000));
     //let energy = Game.spawns.Spawn1.room.energyCapacityAvailable;
     //console.log('Current available energy:', energy)
 
@@ -111,4 +109,7 @@ module.exports.loop = function () {
             console.log('Clearing non-existing creeps in memory:', name);
         }
     }
+    
+    //console.log('Current CPU usage:', (Math.round(Game.cpu.getUsed() * 100) / 1000));
+    
 }
