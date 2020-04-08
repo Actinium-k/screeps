@@ -1,3 +1,5 @@
+// Importing modules
+require('prototype.creep')();
 let roleUpgrader = require('role.upgrader');
 
 let roleBuilder = {
@@ -29,10 +31,7 @@ let roleBuilder = {
         }
         // Refill from energy source
         else {
-            let source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE)
-            if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source, {reusePath: 3}, {visualizePathStyle: {stroke: '#ffaa00'}});
-            }
+            creep.refill();
         }
     }
 };

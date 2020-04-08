@@ -1,3 +1,5 @@
+// Importing modules
+require('prototype.creep')();
 let roleRepairer = require('role.repairer');
 
 let roleWallRepairer = {
@@ -32,10 +34,7 @@ let roleWallRepairer = {
         }
         // Refill from energy source
         else {
-            let sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[1], {reusePath: 3}, {visualizePathStyle: {stroke: '#ff7373'}});
-            }
+            creep.refill();
         }
     }
 };
