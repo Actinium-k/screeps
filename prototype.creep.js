@@ -1,26 +1,27 @@
 module.exports = function() {
 
-    // Refill from energy source
-    Creep.prototype.refill = function() {
-        // Create an array of dropped energy and active sources
-        let sources = (creep.room.find(FIND_DROPPED_RESOURCES, {
-            filter: {resourceType: RESOURCE_ENERGY}
-        })).concat(creep.room.find(FIND_SOURCES_ACTIVE));
-        
-        // Find the closest source of energy
-        let target = creep.pos.findClosestByPath(sources);
-
-        // If the target is a dropped energy, pick it up
-        if(target == RESOURCE_ENERGY) {
-            if(creep.pickup(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source, {reusePath: 3}, {visualizePathStyle: {stroke: '#ffaa00'}});
-            }   
-        }
-        // Else, the target is a source so harvest
-        else {
-            if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source, {reusePath: 3},{visualizePathStyle: {stroke: '#ffaa00'}});
-            }
-        }
+// Refill from energy source
+Creep.prototype.refill = function() {
+    // Create an array of non-empty tombstones, dropped energy and active sources
+    let sources = this.room.find(FIND_SOURCES_ACTIVE);
+    
+    // Find the closest source of energy
+    let target = this.pos.findClosestByPath(sources);
+    
+    if(this.harvest(target) == ERR_NOT_IN_RANGE) {
+            return this.moveTo(target, {reusePath: 3, visualizePathStyle: {stroke: '#ffaa00'}});
     }
+    else {
+        /*// DEBUG: nothing should end up here
+        console.log('------')
+        console.log('Creep name', this.name)
+        console.log('Creep target', target)
+        //this.say('Bug')*/
+    }
+};
+
+    // Debug function
+    Creep.prototype.sayHello = function() {
+        return this.say('Hello!');
+    };
 }
