@@ -1,4 +1,4 @@
-//require('prototype.spawn')
+//require('prototype.spawn')();
 //require('prototype.creep')();
 let roleHarvester = require('role.harvester');
 let roleUpgrader = require('role.upgrader');
@@ -109,7 +109,7 @@ module.exports.loop = function () {
             console.log('Clearing non-existing creeps in memory:', name);
         }
     }
-    
+
     //console.log('Current CPU usage:', (Math.round(Game.cpu.getUsed() * 100) / 1000));
     
 }
