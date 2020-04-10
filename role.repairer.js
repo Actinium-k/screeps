@@ -4,16 +4,13 @@ let roleBuilder = require('role.builder');
 
 let roleRepairer = {
 
-    /** @param {Creep} creep **/
     run: function(creep) {
 
         if(creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.repairing = false;
-            creep.say('🔄 harvest');
         }
         if(!creep.memory.repairing && creep.store.getFreeCapacity() == 0) {
             creep.memory.repairing = true;
-            creep.say('🛠️ repair');
         }
 
         // Repair the first structure in the list
