@@ -4,26 +4,23 @@ let roleRepairer = require('role.repairer');
 
 let roleWallRepairer = {
 
-    /** @param {Creep} creep **/
     run: function(creep) {
 
-        if(creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
+        if (creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.repairing = false;
-            creep.say('🔄 harvest');
         }
-        if(!creep.memory.repairing && creep.store.getFreeCapacity() == 0) {
+        if (!creep.memory.repairing && creep.store.getFreeCapacity() == 0) {
             creep.memory.repairing = true;
-            creep.say('🛠️ repair');
         }
 
         // Repair the first wall in the list
-        if(creep.memory.repairing) {
+        if (creep.memory.repairing) {
             let targets = creep.room.find(FIND_STRUCTURES, {
-                filter: object => object.hits < 1000000
-                && object.structureType == STRUCTURE_WALL
+                filter: s => s.hits < 1000000
+                && s.structureType == STRUCTURE_WALL
             });
-            if(targets.length) {
-                if(creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
+            if (targets.length) {
+                if (creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {reusePath: 5}, {visualizePathStyle: {stroke: '#ff0000'}});
                 }
             }
@@ -34,7 +31,7 @@ let roleWallRepairer = {
         }
         // Refill from energy source
         else {
-            creep.refill();
+            creep.refill(useSource=true);
         }
     }
 };
