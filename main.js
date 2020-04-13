@@ -51,43 +51,43 @@ module.exports.loop = function () {
         
         // Respawning harvesters
         if (harvesters.length < harvesters_max) {
-            Game.spawns[i].respawnCreep(i, 'harvester', 'HA', [false, undefined],
+            Game.spawns[spawn_index].respawnCreep(spawn_index, 'harvester', 'HA', [false, undefined],
             {n_move: 3, n_work: 4, n_carry: 2})
         }
 
         // Respawning upgraders
         if (upgraders.length < upgraders_max) {
-            Game.spawns[i].respawnCreep(i, 'upgrader', 'UP', [undefined, undefined],
+            Game.spawns[spawn_index].respawnCreep(spawn_index, 'upgrader', 'UP', [undefined, undefined],
             {n_move: 3, n_work: 3, n_carry: 3})
         }
 
         // Respawning builders
         if (builders.length < builders_max) {
-            Game.spawns[i].respawnCreep(i, 'builder', 'BD', [undefined, undefined],
+            Game.spawns[spawn_index].respawnCreep(spawn_index, 'builder', 'BD', [undefined, undefined],
             {n_move: 3, n_work: 3, n_carry: 3})
         }
 
         // Respawning repairers
         if (repairers.length < repairers_max) {
-            Game.spawns[i].respawnCreep(i, 'repairer', 'RP', [undefined, undefined],
+            Game.spawns[spawn_index].respawnCreep(spawn_index, 'repairer', 'RP', [undefined, undefined],
             {n_move: 3, n_work: 3, n_carry: 3})
         }
 
         // Respawning wall repairers
         if (wallrepairers.length < wallrepairers_max) {
-            Game.spawns[i].respawnCreep(i, 'wallrepairer', 'WR', [undefined, undefined],
+            Game.spawns[spawn_index].respawnCreep(spawn_index, 'wallrepairer', 'WR', [undefined, undefined],
             {n_move: 3, n_work: 3, n_carry: 3})
         }
 
         // Respawning miners
         if (miners.length < miners_max) {
-            Game.spawns[i].respawnCreep(i, 'miner', 'MI', [false, undefined],
+            Game.spawns[spawn_index].respawnCreep(spawn_index, 'miner', 'MI', [false, undefined],
             {n_move: 3, n_work: 4, n_carry: 2})
         }
         
         // Respawning remote harvesters
         if (remoteharvesters.length < remoteharvesters_max) {
-            Game.spawns[i].respawnCreep(i, 'remoteharvester', 'RH', [false, 'W35S38'],
+            Game.spawns[spawn_index].respawnCreep(spawn_index, 'remoteharvester', 'RH', [false, 'W35S38'],
             {n_move: 6, n_work: 3, n_carry: 3})
         }
 
