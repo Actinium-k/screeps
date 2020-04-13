@@ -1,7 +1,6 @@
 module.exports = function() {
 
-    Creep.prototype.refill = function(useSource, useContainer, useStorage) {
-        //console.log(useContainer, this.name)
+    Creep.prototype.refill = function(useSource, useStorage, useContainer) {
         // Select creeps with a low life expectancy
         if (this.ticksToLive < this.store.getCapacity()) {
 
@@ -37,20 +36,6 @@ module.exports = function() {
             }
         }
         
-        // If useContainer is true, withdraw energy from containers
-        if (useContainer) {
-            this.say(useContainer)
-            let containers = this.room.find(FIND_MY_STRUCTURES, {
-                filter: s => s.structureType == STRUCTURE_CONTAINER
-            });
-
-            let target = this.pos.findClosestByPath(containers);
-            
-            if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
-            }
-        }
-
         // If useStorage is true, withdraw energy from storage
         if (useStorage) {
             let storage = this.room.find(FIND_MY_STRUCTURES, {
@@ -59,6 +44,19 @@ module.exports = function() {
 
             let target = this.pos.findClosestByPath(storage);
 
+            if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
+            }
+        }
+
+        // If useContainer is true, withdraw energy from containers
+        if (useContainer) {
+            let containers = this.room.find(FIND_MY_STRUCTURES, {
+                filter: s => s.structureType == STRUCTURE_CONTAINER
+            });
+
+            let target = this.pos.findClosestByPath(containers);
+            
             if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
             }
