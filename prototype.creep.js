@@ -1,8 +1,7 @@
 module.exports = function() {
 
-    // Refill from tombstone or energy source
     Creep.prototype.refill = function(useSource, useContainer, useStorage) {
-
+        //console.log(useContainer, this.name)
         // Select creeps with a low life expectancy
         if (this.ticksToLive < this.store.getCapacity()) {
 
@@ -16,7 +15,7 @@ module.exports = function() {
 
             // Kill the creep if they won't be able to refill entirely
             if (this.ticksToLive < (this.store.getFreeCapacity() / numberOfWorkParts * 2 + 10)) {
-                console.log('Suiciding creep', this.name)
+                console.log('Suiciding creep:', this.name)
                 this.suicide();
             }
         }
@@ -26,25 +25,29 @@ module.exports = function() {
             // Create an array of active sources
             let sources = this.room.find(FIND_SOURCES_ACTIVE);
             
-            // Find the closest source of energy
-            let target = this.pos.findClosestByPath(sources);
-            
-            // Harvest from the closest active source
-            if (this.harvest(target) == ERR_NOT_IN_RANGE) {
-                return this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
+            // Check if there are any active sources in the room
+            if (sources) {
+                // Find the closest source of energy
+                let target = this.pos.findClosestByPath(sources);
+                
+                // Harvest from the closest active source
+                if (this.harvest(target) == ERR_NOT_IN_RANGE) {
+                    this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
+                }
             }
         }
-
+        
         // If useContainer is true, withdraw energy from containers
         if (useContainer) {
+            this.say(useContainer)
             let containers = this.room.find(FIND_MY_STRUCTURES, {
                 filter: s => s.structureType == STRUCTURE_CONTAINER
             });
 
-            let target = this.pod.findClosestByPath(containers);
-
+            let target = this.pos.findClosestByPath(containers);
+            
             if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                return this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
+                this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }
 
@@ -54,26 +57,26 @@ module.exports = function() {
                 filter: s => s.structureType == STRUCTURE_STORAGE
             });
 
-            let target = this.pod.findClosestByPath(storage);
+            let target = this.pos.findClosestByPath(storage);
 
             if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                return this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
+                this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }
 
     };
 
     Creep.prototype.moveToRoom = function(target_room) {
-
         // Move to the specified room
         var exit = this.room.findExitTo(target_room);
         return this.moveTo(this.pos.findClosestByRange(exit),
             {reusePath: 8, visualizePathStyle: {stroke: '#000000'}});
     
     };
-
-    /*// Debug function
-    Creep.prototype.sayHello = function() {
+    
+    // Debug function
+    /*Creep.prototype.sayHello = function() {
         return this.say('Hello!');
     };*/
+
 };
