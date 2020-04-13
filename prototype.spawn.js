@@ -1,18 +1,25 @@
 module.exports = function() {
     
     StructureSpawn.prototype.respawnCreep =
-        function (spawn_index, creep_role, creep_name, creep_parts, properties) {
+        function (spawn_index, creep_role, creep_name, properties, creep_parts) {
+            // Generate the name of the creep based on the current time
             let newName = creep_name + Game.time;
+            // Says in the console which creep we are spawning
             console.log(`Spawning new ${creep_role}:`, newName);
-            let parts = this.spawns[spawn_index].partSelection(creep_parts);
-            return this.spawns[spawn_index].spawnCreep(parts, newName,
-                {memory: {role: `${creep_role}`}, properties});
+            // Generate the parts based on creep_parts
+            let parts = Game.spawns[spawn_index].partSelection(creep_parts);
+            // Spawn the creep using the input values
+            return Game.spawns[spawn_index].spawnCreep(parts, newName, {memory: {
+                role: `${creep_role}`,
+                working: properties[0],
+                target: properties[1]
+            }});
         }
     
     StructureSpawn.prototype.partSelection =
-        function (n_move, n_work, n_carry, n_attack, n_ranged_attack, n_heal, n_claim, n_tough) {
+        function ({n_move=0, n_work=0, n_carry=0, n_attack=0, n_ranged_attack=0, n_heal=0, n_claim=0, n_tough=0}) {
             let parts = []
-
+            
             // Change the order of the parts (TOUGH first, HEAL last)
             for (let i = 0; i < n_tough; i++) {
                 parts.push(TOUGH)
@@ -42,5 +49,9 @@ module.exports = function() {
             return parts;
         }
 
+    // Debug function
+    /*StructureSpawn.prototype.debug = function (i) {
+        console.log(JSON.stringify(Game.spawns[i].name))
+    }*/
 
 };
