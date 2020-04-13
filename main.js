@@ -14,10 +14,11 @@ let roleTransporter = require('role.transporter')
 let roles = [roleHarvester, roleUpgrader, roleBuilder, roleRepairer, roleWallRepairer, roleClaimer, 
     roleMiner, roleRemoteHarvester, roleTransporter];
 let roles_str = ['harvester', 'upgrader', 'builder', 'repairer', 'wallrepairer', 'claimer', 
-'miner', 'remoteharvester', 'transporter'];
+    'miner', 'remoteharvester', 'transporter'];
 
 module.exports.loop = function () {
 
+    // Apply the main sequence to every spawn
     for (const spawn_index in Game.spawns) {
 
         // Define the maximum numbers of creeps for each role
@@ -37,9 +38,6 @@ module.exports.loop = function () {
         let wallrepairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'wallrepairer');
         let miners = _.filter(Game.creeps, (creep) => creep.memory.role == 'miner');
         let remoteharvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'remoteharvester');
-
-        //let energy = Game.spawns.Spawn1.room.energyCapacityAvailable;
-        //console.log('Current available energy:', energy)
         
         // Run each role
         for (let name in Game.creeps) {
@@ -49,10 +47,6 @@ module.exports.loop = function () {
                     roles[i].run(creep)
                 }
             }
-        }
-        
-        for (i in Game.spawns) {
-            //Game.spawns[i].respawnCreep(i, 'norole', 'bobby', {n_move: 1, n_carry: 1}, [false, 'W37S38'])
         }
         
         // Respawning harvesters
