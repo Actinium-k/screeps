@@ -40,12 +40,15 @@ module.exports = function() {
         if (useStorage) {
             let storage = this.room.find(FIND_MY_STRUCTURES, {
                 filter: s => s.structureType == STRUCTURE_STORAGE
+                && s.store.getUsedCapacity(RESOURCE_ENERGY) > 0
             });
 
-            let target = this.pos.findClosestByPath(storage);
+            if (storage) {
+                let target = this.pos.findClosestByPath(storage);
 
-            if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
+                if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
+                }
             }
         }
 
@@ -53,12 +56,15 @@ module.exports = function() {
         if (useContainer) {
             let containers = this.room.find(FIND_MY_STRUCTURES, {
                 filter: s => s.structureType == STRUCTURE_CONTAINER
+                && s.store.getUsedCapacity(RESOURCE_ENERGY) < 0
             });
 
-            let target = this.pos.findClosestByPath(containers);
-            
-            if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
+            if (containers) {
+                let target = this.pos.findClosestByPath(containers);
+                
+                if (this.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    this.moveTo(target, {reusePath: 5, visualizePathStyle: {stroke: '#ffaa00'}});
+                }
             }
         }
 
