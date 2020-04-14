@@ -11,7 +11,7 @@ let roleRepairer = {
         if (!creep.memory.repairing && creep.store.getFreeCapacity() == 0) {
             creep.memory.repairing = true;
         }
-        creep.say('here')
+        
         // Repair the first structure in the list
         if (creep.memory.repairing) {
             // Creating an array of all structures that need repairs
@@ -28,7 +28,7 @@ let roleRepairer = {
             /*for(let i = 0; i < (targets.length - 80); i++) {
                 console.log((targets[i].hits * 100 / targets[i].hitsMax) + "%", i, targets[i].structureType)
             }*/
-            
+
             if (targets.length) {
                 if (creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0],
