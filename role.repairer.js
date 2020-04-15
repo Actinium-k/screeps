@@ -16,19 +16,21 @@ let roleRepairer = {
         if (creep.memory.repairing) {
             // Creating an array of all structures that need repairs
             let targets = creep.room.find(FIND_STRUCTURES, {
-                filter: s => s.hits < (s.hitsMax/2)
+                filter: s => s.hits < s.hitsMax
                 && s.structureType != STRUCTURE_WALL
-                && (s.structureType != STRUCTURE_RAMPART < 1000000)
+                && s.structureType != STRUCTURE_RAMPART
             });
-
+            
             // Sorting the structures from least decayed to most decayed
-            targets = targets.sort();
+            targets = targets.sort(function(a, b) {
+                return a.hits - b.hits;
+            });;
             
             // DEBUG: logging all targets
-            /*for(let i = 0; i < (targets.length - 80); i++) {
+            /*for(let i = 0; i < (targets.length); i++) {
                 console.log((targets[i].hits * 100 / targets[i].hitsMax) + "%", i, targets[i].structureType)
             }*/
-
+            
             if (targets.length) {
                 if (creep.repair(targets[0]) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0],
@@ -42,7 +44,7 @@ let roleRepairer = {
         }
         // Refill from energy source
         else {
-            creep.refill(true, true);
+            creep.refill(true);
         }
         
     }
