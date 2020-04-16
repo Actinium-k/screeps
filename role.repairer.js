@@ -18,7 +18,6 @@ let roleRepairer = {
             let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: s => s.hits < s.hitsMax
                 && s.structureType != STRUCTURE_WALL
-                && s.structureType != STRUCTURE_RAMPART
             });
             
             // Sorting the structures from least decayed to most decayed
