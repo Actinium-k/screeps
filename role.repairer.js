@@ -4,7 +4,7 @@ let roleBuilder = require('role.builder');
 
 let roleRepairer = {
     run: function(creep) {
-
+        
         if (creep.memory.repairing && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.repairing = false;
         }
@@ -23,7 +23,7 @@ let roleRepairer = {
             
             // Sorting the structures from least decayed to most decayed
             targets = targets.sort(function(a, b) {
-                return a.hits - b.hits;
+                return (a.hits*100/a.hitsMax) - (b.hits*100/b.hitsMax);
             });;
             
             // DEBUG: logging all targets
