@@ -2,18 +2,27 @@ module.exports = function() {
     
     StructureSpawn.prototype.respawnCreep =
         function (spawn_index, creep_role, creep_name, properties, creep_parts) {
-            // Generate the name of the creep based on the current time
-            let newName = creep_name + Game.time;
-            // Says in the console which creep we are spawning
-            console.log(`Spawning new ${creep_role}:`, newName);
+            
+            // Generate the name of the creep
+            let name = (Math.random().toString(36)+'000000').slice(2, 6)
+            let newName = creep_name + '·' + name;
+
+            // Say in the console which creep we are spawning
+            if (Game.spawns[spawn_index].spawning) {
+                console.log(`Spawning new ${creep_role}:`, newName);
+            }
+            
             // Generate the parts based on creep_parts
             let parts = Game.spawns[spawn_index].partSelection(creep_parts);
+
             // Spawn the creep using the input values
             return Game.spawns[spawn_index].spawnCreep(parts, newName, {memory: {
                 role: `${creep_role}`,
-                working: properties[0],
-                target: properties[1]
+                spawn: Game.spawns[spawn_index].name,
+                working: false,
+                target: properties[0]
             }});
+
         }
     
     StructureSpawn.prototype.partSelection =
