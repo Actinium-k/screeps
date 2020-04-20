@@ -4,7 +4,7 @@ module.exports.defineMaxCreeps = function(spawn_index) {
     let spawn = Game.spawns[spawn_index]
     let rcl = spawn.room.controller.level
     if (rcl <= 3) {
-        spawn.memory.haversters_max = 2;
+        spawn.memory.harvesters_max = 2;
         spawn.memory.builders_max = 2;
         spawn.memory.repairers_max = 1;
     }
@@ -16,14 +16,15 @@ module.exports.defineMaxCreeps = function(spawn_index) {
     }
     else if (rcl <= 5) {
         spawn.memory.harvesters_max = 4;
-        spawn.memory.remoteharvesters_max = 6;
-        spawn.memory.claimers_max = 2;
+        spawn.memory.remoteharvesters_max = 4;
+        spawn.memory.claimers_max = 1;
     }
     else if (rcl <= 6) {
         spawn.memory.upgraders_max = 3;
-        spawn.memory.remoteharvesters_max = 8;
-        spawn.memory.claimers_max = 4;
-        spawn.memory.miners_max = 1;
+        spawn.memory.remoteharvesters_max = 4;
+        spawn.memory.repairers_max = 2;
+        spawn.memory.claimers_max = 1;
+        spawn.memory.miners_max = 0;
     }
     else if (rcl <= 7) {
         console.log('Please setup RCL 7 constants')
