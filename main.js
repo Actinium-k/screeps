@@ -32,39 +32,28 @@ module.exports.loop = function () {
         mod_spawn.defineMaxCreeps(spawn_index)
         mod_spawn.getCreepsParts(spawn_index)
 
-        // Define the maximum numbers of creeps for each role
-        const harvesters_max = 3;
-        const upgraders_max = 3;
-        const builders_max = 2;
-        const repairers_max = 1;
-        const wallrepairers_max = 2;
-        const miners_max = 0;
-        const remoteharvesters_max = 5;
-        const claimers_max = 1;
-        const settlers_max = 2;
-        
         // Describe all empty neighbouring rooms
         var empty_rooms = mod_exit.findEmptyRooms(spawn_index);
 
         // Create arrays containing every creep of each role
         let harvesters = _.filter(Game.creeps,
-            (creep) => creep.memory.role == 'harvester'/* && creep.memory.spawn == spawn.name*/);
+            (creep) => creep.memory.role == 'harvester' && creep.memory.room == spawn.room.name);
         let upgraders = _.filter(Game.creeps,
-            (creep) => creep.memory.role == 'upgrader');
+            (creep) => creep.memory.role == 'upgrader' && creep.memory.room == spawn.room.name);
         let builders = _.filter(Game.creeps,
-            (creep) => creep.memory.role == 'builder');
+            (creep) => creep.memory.role == 'builder' && creep.memory.room == spawn.room.name);
         let repairers = _.filter(Game.creeps,
-            (creep) => creep.memory.role == 'repairer');
+            (creep) => creep.memory.role == 'repairer' && creep.memory.room == spawn.room.name);
         let wallrepairers = _.filter(Game.creeps,
-            (creep) => creep.memory.role == 'wallrepairer');
+            (creep) => creep.memory.role == 'wallrepairer' && creep.memory.room == spawn.room.name);
         let miners = _.filter(Game.creeps,
-            (creep) => creep.memory.role == 'miner');
+            (creep) => creep.memory.role == 'miner' && creep.memory.room == spawn.room.name);
         let remoteharvesters = _.filter(Game.creeps,
-            (creep) => creep.memory.role == 'remoteharvester');
+            (creep) => creep.memory.role == 'remoteharvester' && creep.memory.room == spawn.room.name);
         let claimers = _.filter(Game.creeps,
-            (creep) => creep.memory.role == 'claimer');
+            (creep) => creep.memory.role == 'claimer' && creep.memory.room == spawn.room.name);
         let settlers = _.filter(Game.creeps,
-            (creep) => creep.memory.role == 'settler');
+            (creep) => creep.memory.role == 'settler' && creep.memory.room == spawn.room.name);
         
         // Run each role
         for (let name in Game.creeps) {
@@ -75,69 +64,78 @@ module.exports.loop = function () {
                 }
             }
         }
-
+        
         // If the room does not have any extension, spawn a default creep
-        if (spawn.room.energyCapacityAvailable == 300 && upgraders.length < upgraders_max) {
+        if (spawn.room.energyCapacityAvailable == 300 && upgraders.length < spawn.memory.upgraders_max) {
             spawn.respawnCreep(spawn_index, 'upgrader', 'up', [undefined],
             {n_move: 2, n_work: 1, n_carry: 1})
         }
         
         // Respawning harvesters
-        if (harvesters.length < harvesters_max) {
+        if (harvesters.length < spawn.memory.harvesters_max) {
+            let memory = spawn.memory.harvester
             spawn.respawnCreep(spawn_index, 'harvester', 'ha', [undefined],
-            {n_move: 4, n_work: 4, n_carry: 4})
+            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]})
         }
 
         // Respawning upgraders
-        if (upgraders.length < upgraders_max) {
+        if (upgraders.length < spawn.memory.upgraders_max) {
+            let memory = spawn.memory.upgrader
             spawn.respawnCreep(spawn_index, 'upgrader', 'up', [undefined],
-            {n_move: 6, n_work: 6, n_carry: 6})
+            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]})
         }
 
         // Respawning builders
-        if (builders.length < builders_max) {
+        if (builders.length < spawn.memory.builders_max) {
+            let memory = spawn.memory.builder
             spawn.respawnCreep(spawn_index, 'builder', 'bd', [undefined],
-            {n_move: 6, n_work: 6, n_carry: 6})
+            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]})
         }
 
         // Respawning repairers
-        if (repairers.length < repairers_max) {
+        if (repairers.length < spawn.memory.repairers_max) {
+            let memory = spawn.memory.repairer
             spawn.respawnCreep(spawn_index, 'repairer', 'rp', [undefined],
-            {n_move: 4, n_work: 4, n_carry: 4})
+            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]})
         }
 
         // Respawning wall repairers
-        if (wallrepairers.length < wallrepairers_max) {
+        if (wallrepairers.length < spawn.memory.wallrepairers_max) {
+            let memory = spawn.memory.wallrepairer
             spawn.respawnCreep(spawn_index, 'wallrepairer', 'wr', [undefined],
-            {n_move: 4, n_work: 4, n_carry: 4})
+            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]})
         }
 
         // Respawning miners
-        if (miners.length < miners_max) {
+        if (miners.length < spawn.memory.miners_max) {
+            let memory = spawn.memory.miner
             spawn.respawnCreep(spawn_index, 'miner', 'mi', [undefined],
-            {n_move: 3, n_work: 4, n_carry: 2})
+            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]})
         }
 
         // Respawning settlers
-        if (settlers.length < settlers_max) {
+        if (settlers.length < spawn.memory.settlers_max) {
+            let memory = spawn.memory.settler
             spawn.respawnCreep(spawn_index, 'settler', 'st', ['W38S38'],
-            {n_move: 6, n_work: 3, n_carry: 3})
+            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]})
         }
         
         // Respawning remote harvesters
-        if (remoteharvesters.length < remoteharvesters_max) {
+        if (remoteharvesters.length < spawn.memory.remoteharvesters_max) {
+            let memory = spawn.memory.remoteharvester
             // Select a random exit from empty_rooms
             let rand = Math.random();
             rand = Math.floor(rand * empty_rooms.length);
             // Spawn a remote harvester whose target is a random room nearby
             spawn.respawnCreep(spawn_index, 'remoteharvester', 'rh', ['W35S38']/*[empty_rooms[rand]]*/,
-            {n_move: 8, n_work: 4, n_carry: 4})
+            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]})
         }
         
         // Respawning claimers
-        if (claimers.length < claimers_max) {
+        if (claimers.length < spawn.memory.claimers_max) {
+            //let memory = spawn.memory.claimer
             spawn.respawnCreep(spawn_index, 'claimer', 'cl', ['W35S38'],
-            {n_move: 1, n_claim: 1})
+            {n_move: 2, n_claim: 2})
         }
         
         // Detect enemies in the room
