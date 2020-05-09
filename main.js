@@ -27,7 +27,7 @@ module.exports.loop = function () {
     for (const spawn_index in Game.spawns) {
         
         var spawn = Game.spawns[spawn_index]
-
+        
         // Define the max number of creeps and their parts
         mod_spawn.defineMaxCreeps(spawn_index)
         mod_spawn.getCreepsParts(spawn_index)
@@ -66,7 +66,7 @@ module.exports.loop = function () {
         }
         
         // If the room does not have any extension, spawn a default creep
-        if (spawn.room.energyCapacityAvailable == 300 && upgraders.length < spawn.memory.upgraders_max) {
+        if (spawn.room.energyCapacity == 300 && upgraders.length < spawn.memory.upgraders_max) {
             spawn.respawnCreep(spawn_index, 'upgrader', 'up', [undefined],
             {n_move: 2, n_work: 1, n_carry: 1})
         }
@@ -74,10 +74,14 @@ module.exports.loop = function () {
         // Respawning harvesters
         if (harvesters.length < spawn.memory.harvesters_max) {
             let memory = spawn.memory.harvester
-            spawn.respawnCreep(spawn_index, 'harvester', 'ha', [undefined],
-            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]})
+            if (spawn.respawnCreep(spawn_index, 'harvester', 'ha', [undefined],
+            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]}) == -6 && harvesters.length == 0) {
+                // If no harvesters can spawn and none are alive, spawn a default harvester
+                spawn.respawnCreep(spawn_index, 'harvester', 'ha', [undefined],
+                {n_move: 2, n_work: 1, n_carry: 1})
+            }
         }
-
+        
         // Respawning upgraders
         if (upgraders.length < spawn.memory.upgraders_max) {
             let memory = spawn.memory.upgrader
@@ -147,7 +151,7 @@ module.exports.loop = function () {
                 FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_TOWER}});
             towers.forEach(tower => tower.attack(hostiles[0]));
             console.log("ALERT - WE ARE BEING ATTACKED - TARGET:", hostiles[0])
-
+            
             // Spawn a defensive creep if there is more than 1 enemy
             if (hostiles.length > 1) {
                 spawn.respawnCreep(spawn_index, 'defender', 'df', [undefined],
@@ -156,7 +160,7 @@ module.exports.loop = function () {
         }
         
     }
-
+    
     // Clear the memory of non-existing creeps
     for (let name in Memory.creeps) {
         if (!Game.creeps[name]) {
