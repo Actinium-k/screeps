@@ -9,13 +9,12 @@ module.exports.defineMaxCreeps = function(spawn_index) {
         spawn.memory.repairers_max = 1;
     }
     else if (rcl <= 4) {
-        spawn.memory.harvesters_max = 3;
         spawn.memory.upgraders_max = 2;
         spawn.memory.wallrepairers_max = 1;
         spawn.memory.remoteharvesters_max = 4;
     }
     else if (rcl <= 5) {
-        spawn.memory.harvesters_max = 4;
+        spawn.memory.harvesters_max = 3;
         spawn.memory.remoteharvesters_max = 4;
         spawn.memory.claimers_max = 1;
     }
@@ -24,10 +23,10 @@ module.exports.defineMaxCreeps = function(spawn_index) {
         spawn.memory.remoteharvesters_max = 4;
         spawn.memory.repairers_max = 2;
         spawn.memory.claimers_max = 1;
-        spawn.memory.miners_max = 0;
+        spawn.memory.miners_max = 1;
     }
     else if (rcl <= 7) {
-        console.log('Please setup RCL 7 constants')
+        spawn.memory.settlers_max = 2;
     }
     else if (rcl == 8) {
         spawn.memory.upgraders_max = 1;
@@ -39,21 +38,50 @@ module.exports.defineMaxCreeps = function(spawn_index) {
 module.exports.getCreepsParts = function(spawn_index) {
     
     let spawn = Game.spawns[spawn_index]
+    let rcl = spawn.room.controller.level
     let energy_max = Game.spawns[spawn_index].room.energyCapacityAvailable
 
     // Define the maximum energy use, class and whether the creep will use roads
-    const harvester = [33, 'worker', true]
-    const upgrader = [50, 'worker', true]
-    const builder = [50, 'worker', true]
-    const repairer = [33, 'worker', true]
-    const wallrepairer = [33, 'worker', true]
-    const claimer = [33, 'military', false]
-    const miner = [25, 'worker', true]
-    const remoteharvester = [50, 'worker', false]
-    const transporter = [25, 'carrier', true]
-    const defender = [33, 'military', true]
-    const settler = [40, 'worker', false]
-
+    if (rcl < 7) {
+        var harvester = [33, 'worker', true]
+        var upgrader = [50, 'worker', true]
+        var builder = [50, 'worker', true]
+        var repairer = [33, 'worker', true]
+        var wallrepairer = [33, 'worker', true]
+        var claimer = [33, 'military', false]
+        var miner = [25, 'worker', true]
+        var remoteharvester = [50, 'worker', false]
+        var transporter = [25, 'carrier', true]
+        var defender = [33, 'military', true]
+        var settler = [40, 'worker', false]
+    }
+    else if (rcl == 7) {
+        var harvester = [25, 'worker', true]
+        var upgrader = [40, 'worker', true]
+        var builder = [40, 'worker', true]
+        var repairer = [25, 'worker', true]
+        var wallrepairer = [25, 'worker', true]
+        var claimer = [25, 'military', false]
+        var miner = [20, 'worker', true]
+        var remoteharvester = [40, 'worker', false]
+        var transporter = [20, 'carrier', true]
+        var defender = [25, 'military', true]
+        var settler = [25, 'worker', false]
+    }
+    else if (rcl == 8) {
+        var harvester = [20, 'worker', true]
+        var upgrader = [33, 'worker', true]
+        var builder = [33, 'worker', true]
+        var repairer = [20, 'worker', true]
+        var wallrepairer = [20, 'worker', true]
+        var claimer = [20, 'military', false]
+        var miner = [15, 'worker', true]
+        var remoteharvester = [33, 'worker', false]
+        var transporter = [15, 'carrier', true]
+        var defender = [20, 'military', true]
+        var settler = [20, 'worker', false]
+    }
+    
     const roles = [harvester, upgrader, builder, repairer, wallrepairer, claimer, miner,
         remoteharvester, transporter, defender, settler]
     const roles_str = ['harvester', 'upgrader', 'builder', 'repairer', 'wallrepairer', 'claimer', 'miner',
