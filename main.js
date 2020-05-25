@@ -75,7 +75,7 @@ module.exports.loop = function () {
         if (harvesters.length < spawn.memory.harvesters_max) {
             let memory = spawn.memory.harvester
             if (spawn.respawnCreep(spawn_index, 'harvester', 'ha', [undefined],
-            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]}) == -6 && harvesters.length == 0) {
+            {n_move: memory[0], n_work: memory[1], n_carry: memory[2]}) == -6 && harvesters.length <= 1) {
                 // If no harvesters can spawn and none are alive, spawn a default harvester
                 spawn.respawnCreep(spawn_index, 'harvester', 'ha', [undefined],
                 {n_move: 2, n_work: 1, n_carry: 1})

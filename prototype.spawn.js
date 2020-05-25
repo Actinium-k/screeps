@@ -9,7 +9,7 @@ module.exports = function() {
 
             // Say in the console which creep we are spawning
             if (Game.spawns[spawn_index].spawning) {
-                console.log(`Spawning new ${creep_role}:`, newName);
+                console.log(`${Game.spawns[spawn_index]} spawning new ${creep_role}:`, newName);
             }
             
             // Generate the parts based on creep_parts
@@ -18,11 +18,11 @@ module.exports = function() {
             // Spawn the creep using the input values
             return Game.spawns[spawn_index].spawnCreep(parts, newName, {memory: {
                 role: `${creep_role}`,
-                spawn: Game.spawns[spawn_index].name,
+                room: Game.spawns[spawn_index].room.name,
                 working: false,
                 target: properties[0]
             }});
-
+            
         }
     
     StructureSpawn.prototype.partSelection =
